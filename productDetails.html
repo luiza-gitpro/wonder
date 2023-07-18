@@ -1,0 +1,224 @@
+<template>
+    <header>
+        <div class="overlay">
+            <h1>Hi, {currentUserName}</h1>
+            <h2>THANK YOU FOR VISING OUR WESBISTE</h2>
+            <br>
+            <button>READ MORE</button>
+        </div>
+    </header>
+  <br><br>
+    <div class="slds-p-around_medium">
+        <lightning-layout>
+            <lightning-layout-item>
+                <lightning-vertical-navigation selected-item={selectedItem} onselect={changeHandleAction} 
+                    class="navigation">
+                    <lightning-vertical-navigation-section label="">
+                        <lightning-vertical-navigation-item  label="My Products"
+                            name="product"></lightning-vertical-navigation-item>
+                        <lightning-vertical-navigation-item label="My Services"
+                            name="service"></lightning-vertical-navigation-item>
+                        <lightning-vertical-navigation-item label="My Claims"
+                            name="claims"></lightning-vertical-navigation-item>
+                        <lightning-vertical-navigation-item label="Help Center"
+                            name="helpCenter"></lightning-vertical-navigation-item>
+                    </lightning-vertical-navigation-section>
+                </lightning-vertical-navigation>
+            </lightning-layout-item>
+         <div class="table">
+
+             <lightning-layout-item padding="around-medium">
+                 <h2 class="slds-section-title--divider" style="background:#c9dbf4; margin-bottom:10px;"><strong>You Are
+                         Viewing: <span style="color:#07076c;">{currentContent}</span></strong></h2>
+ 
+                 <template if:true={productValue}>
+                     <div>
+                         <div>
+                             <!-- parent to child dropdown -->
+                             <div class="slds-align_absolute-center">
+                                 <div class="slds-text-color_inverse slds-text-heading_large" style="padding:0.5rem;background:#ffffff">        
+                                     
+                                 </div>
+                                 <!-- <div style="padding:2px;">
+                                     <lightning-button variant="brand" label="Expand All" onclick={expandAll} class="slds-m-left_x-small"></lightning-button>
+                                     <lightning-button variant="brand" label="Collapse All" onclick={collapseAll} class="slds-m-left_x-small"></lightning-button>
+                                 </div> -->
+                                 <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped">
+                                     <thead>
+                                         <tr class="slds-line-height_reset" >
+                                             <th>
+                                                 Product Name
+                                             </th>
+                                             <th>
+                                                Term
+                                             </th>
+                                             <th>
+                                                 Mileage
+                                             </th>
+                                             <th>
+                                                 Status
+                                             </th>
+                                             <th>
+                                                 Expiration Date
+                                             </th>
+                                         </tr>
+                                     </thead>
+                                     <tbody>
+                                         <template iterator:it={records}>
+                                             <tr class="slds-hint-parent" key={it.value.objProduct.Id} style="cursor: pointer;">                        
+                                                 <td data-label="Product Name" onclick={hideAndShow}>       
+                                                     <a   data-record-id={it.index} style="display:block;text-decoration:none;color:black;">                 
+                                                         {it.value.objProduct.Name}
+                                     
+                                                     </a>
+                                                    
+                                                     <p data-record-id={it.index} style="display:block;text-decoration:none;color:black;">
+                                                        VIN:{it.value.objProduct.Product_Id__c} </p>
+                                                 </td>
+                                                 <td data-label="Term" onclick={hideAndShow}>
+                                                     <a  data-record-id={it.index} style="display:block;text-decoration:none;color:black;">                 
+                                                         {it.value.objProduct.Term__c}
+                                                     </a>
+                                                 </td>
+                                                 <td data-label="Mileage" onclick={hideAndShow}>
+                                                     <a   data-record-id={it.index} style="display:block;text-decoration:none;color:black;">                 
+                                                         {it.value.objProduct.Mileage__c}
+                                                     </a>
+                                                 </td>
+                                                 <td data-label="Status" onclick={hideAndShow}>
+                                                     <a   data-record-id={it.index} style="display:block;text-decoration:none;color:black;">                 
+                                                         {it.value.objProduct.Status__c}
+                                                     </a>
+                                                 </td>
+                                                 <td data-label="Expiration Date" onclick={hideAndShow}>
+                                                     <a   data-record-id={it.index} style="display:block;text-decoration:none;color:black;">                 
+                                                         {it.value.objProduct.Expiration_Date__c}
+                                                     </a>
+                                                 </td>   
+                                                 <td  data-label="View Details" onclick={hideAndShow}>
+                                                    <a   data-record-id={it.index} style="display:block;text-decoration:none;color:black;">  
+                                                                
+                                                    <lightning-icon icon-name={it.value.iconName} size="small"
+                                                    onclick={hideAndShow} data-record-id={it.index} ></lightning-icon>
+                                                </a>
+                                                </td>   
+                                                 
+                                             </tr>
+                                             <template if:false={it.value.hideBool} >
+
+                                             <b key={it.value.objProduct.Id} style="padding: 5px;"></b>
+                                                 <tr key={it.value.objProduct.Id}>
+                                                     <td colspan="5">
+                                                         <template if:true={it.value.Contractbool}>    
+                                                             <b key={it.value.objProduct.Id}>Contract details found for this Product :</b>
+                                                                 <template iterator:it={it.value.objProduct.Contracts__r}>
+                                                                     <div style="padding:1px;" key={it.value.Id} >
+                                                                         Purchase Date: {it.value.Purchase_Date__c} <br/>
+                                                                         Starting-Expiration Mileage: {it.value.Starting_Expiration_Mileage__c} <br/>
+                                                                         Deductible: {it.value.Deductible__c} <br/>
+                                                                         Options: {it.value.Options__c}                            
+                                                                     </div>
+                                                                 </template>
+                                                         </template>
+                                                         <template if:false={it.value.Contractbool}>    
+                                                             <b key={it.value.objProduct.Id}>No Contracts found for this Product!!!</b>
+                                                         </template>
+                                                     </td>
+                                                 </tr>
+                                             </template>                    
+                                         </template>
+                                     </tbody>
+                                 </table>
+                             </div>
+ 
+                         </div>
+                     </div>
+                 </template>
+                 <!-- <template if:true={serviceValue}>
+                         <div class="tabContent">
+                             <div class="postImage">
+                                 <a href="https://www.w3web.net/create-node-rest-api-to-insert-update-delete-from-soql/"
+                                     target="_blank" rel="noopener noreferrer">
+                                     <img src="https://www.w3web.net/wp-content/uploads/2021/09/nodeApiFeature.png"
+                                         width="300" height="200"></img>
+                                 </a>
+                             </div>
+                             <div class="imgRt">
+                                 <h3 class="slds-text-heading_small slds-text-color--error"><strong>REST API
+                                         service</strong></h3>
+                                 <p class="titleTag"><b><a
+                                             href="https://www.w3web.net/create-node-rest-api-to-insert-update-delete-from-soql/"
+                                             target="_blank" rel="noopener noreferrer">How to insert, update, retrieve
+                                             and Delete Record from Node js Rest Api Using Express JS, pool, pg module
+                                             and localserver in Salesforce (SOQL).</a></b></p>
+                                 <p>Create Node js Rest Api to get, insert, update and delete records from SOQL Using.
+                                 </p>
+                                 <p>Today in this post we are going to learn about How to Create Node js Rest Api to get,
+                                     insert, update and delete records from SOQL Using Express JS, Install pool database,
+                                     Install pg and Install localserver to Start port terminal and project structure
+                                     setup.<span class="readMore"><a
+                                             href="https://www.w3web.net/create-node-rest-api-to-insert-update-delete-from-soql/"
+                                             target="_blank" rel="noopener noreferrer"> more →</a></span></p>
+                             </div>
+                         </div>
+                     </template> -->
+ 
+                 <!-- <template if:true={claimsValue}>
+                         <div class="tabContent">
+                             <div class="postImage">
+                                 <a href="https://www.w3web.net/claims-page-to-return-data-from-multiple-custom-object/"
+                                     target="_blank" rel="noopener noreferrer">
+                                     <img src="https://www.w3web.net/wp-content/uploads/2021/05/vfpMultipleObjects.png"
+                                         width="300" height="200"></img>
+                                 </a>
+                             </div>
+                             <div class="imgRt">
+                                 <h3 class="slds-text-heading_small slds-text-color--error"><strong>Salesforce
+                                         claims Page</strong></h3>
+                                 <p class="titleTag"><b><a
+                                             href="https://www.w3web.net/claims-page-to-return-data-from-multiple-custom-object/"
+                                             target="_blank" rel="noopener noreferrer">How to fetch data from multiple
+                                             different object in claims page.</a></b></p>
+                                 <p>Create claims page to retrieve data from multiple custom objects using custom
+                                     controller wrapper class.</p>
+                                 <p>Today in this post we are going to learn about how to retrieve data from multiple
+                                     custom objects using custom controller wrapper class and display data in a table of
+                                     VF page in Salesforce..<span class="readMore"><a
+                                             href="https://www.w3web.net/claims-page-to-return-data-from-multiple-custom-object/"
+                                             target="_blank" rel="noopener noreferrer"> more →</a></span></p>
+                             </div>
+                         </div>
+                     </template> -->
+ 
+                 <!-- <template if:true={helpCenterValue}>
+                         <div class="tabContent">
+                             <div class="postImage">
+                                 <a href="https://www.w3web.net/helpCenter-to-check-duplicate-email-on-lead/"
+                                     target="_blank" rel="noopener noreferrer">
+                                     <img src="https://www.w3web.net/wp-content/uploads/2021/07/duplicateEmailCheckLeadFeature.png"
+                                         width="300" height="200"></img>
+                                 </a>
+                             </div>
+                             <div class="imgRt">
+                                 <p class="titleTag"><b><a
+                                             href="https://www.w3web.net/helpCenter-to-check-duplicate-email-on-lead/"
+                                             target="_blank" rel="noopener noreferrer">Preventing duplicate records of
+                                             contact based on multiple fields.</a></b></p>
+                                 <p>Write a helpCenter on lead to prevent duplicate records based on lead email Whenever the
+                                     records is inserted Or updated using apex class.</p>
+                                 <p>Today in this post we are going to learn about How to Check Duplicate Email on Lead
+                                     Object in Salesforce. Write a helpCenter on lead to prevent duplicate records.<span
+                                         class="readMore"><a
+                                             href="https://www.w3web.net/helpCenter-to-check-duplicate-email-on-lead/"
+                                             target="_blank" rel="noopener noreferrer"> more →</a></span></p>
+                             </div>
+                         </div>
+                     </template> -->
+             </lightning-layout-item>
+         </div>
+        </lightning-layout>
+        <br /><br />
+        <br />
+        <!--End RelatedTopics Section-->
+    </div>
+</template>
